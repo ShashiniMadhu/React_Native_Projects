@@ -1,76 +1,29 @@
-import { StyleSheet, View, FlatList, Button} from 'react-native';
-import { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
+import { StyleSheet,ImageBackground} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
-import GoalItem from './components/GoalItem';
-import GoalInput from './components/GoalInput';
+import StartGameScreen from './screens/StartGameScreen';
 
 export default function App() {
-  const [modalIsVisible, setModalIsVisible] = useState(false);
-  const [courseGoals, setCourseGoals] = useState([]);
-
-  function startAddGoalHandler(){
-    setModalIsVisible(true);
-  }
-
-  function endAddGoalHandler(){
-    setModalIsVisible(false);
-  }
-
-  function addGoalHandler(goalText) {
-    setCourseGoals(currentCourseGoals => [
-      ...currentCourseGoals, 
-      { text: goalText, id: Math.random().toString()}
-    ]);
-    endAddGoalHandler();
-  }
-
-  function deleteGoalHandler(id){
-    setCourseGoals(currentCourseGoals => {
-      return currentCourseGoals.filter((goal) => goal.id !== id);
-    });
-  }
-
+  
   return (
-    <>
-      <StatusBar style='light'/>
-      <View style={styles.appContainer}>
-        <Button 
-          title='Add New Goal' 
-          color='#a065ec' 
-          onPress={startAddGoalHandler}
-        />
-        <GoalInput showModal={modalIsVisible} onAddGoal={addGoalHandler} onCancel={endAddGoalHandler} />
-        <View style={styles.goalsContainer}>
-          <FlatList 
-            data={courseGoals} 
-            alwaysBounceVertical={false}
-            renderItem={(itemData) => {
-              return (
-                <GoalItem 
-                  text={itemData.item.text} 
-                  id={itemData.item.id} 
-                  onDelete={deleteGoalHandler} 
-                />
-              );
-            }}
-            keyExtractor={(item,index)=>{
-              return item.id;
-            }}
-          />
-        </View>
-      </View>
-    </>
+    <LinearGradient colors={["#4e0329", "#ddb52f"]} style={styles.rootScreen}>
+      <ImageBackground 
+        source={require('./assets/image/backgroundimage.jpg')} 
+        resizeMode="cover" 
+        style={styles.rootScreen} 
+        imageStyle={styles.backgroundImage}
+      >
+        <StartGameScreen />
+      </ImageBackground>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
-  appContainer:{
-    flex:1,
-    paddingTop: 50,
-    paddingHorizontal: 16
+  rootScreen: {
+    flex: 1,
   },
-  goalsContainer:{
-    flex:8
+  backgroundImage:{
+      opacity: 0.15,
   }
 });
